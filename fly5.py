@@ -31,7 +31,7 @@ def fly(pad_dist, alt, speed, wait, res, ip):
     while not False:
         pad = tello.get_mission_pad_id()
         if pad != -1:
-            tello.go_xyz_speed_mid(x=0, y=-i, z=alt, speed=speed, mid=1)
+            tello.go_xyz_speed_mid(x=i, y=-0, z=alt, speed=speed, mid=1)
             i += 1
         else:
             print("Result: ", i)
