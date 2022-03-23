@@ -28,7 +28,7 @@ def fly(pad_dist, alt, speed, wait, res, ip):
 
     # code here
     distance = 0
-    while distance == 500:
+    while distance < 500:
 
         while tello.get_height() <= 95:
             tello.send_rc_control(0, 0, 10, 0)
