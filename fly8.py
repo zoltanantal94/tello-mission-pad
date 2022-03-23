@@ -1,6 +1,6 @@
 from djitellopy import Tello
 import time
-
+distance = 0
 
 def fly(pad_dist, alt, speed, wait, res, ip):
     # Camera preparation
@@ -27,14 +27,33 @@ def fly(pad_dist, alt, speed, wait, res, ip):
     print("pad: ", pad)
 
     # code here
-    while
+    distance = 0
+    while distance == 500:
 
-        while tello.get_height() <= 95:
-            tello.send_rc_control(0, 0, 25, 0)
+            #   while tello.get_height() <= 95:
+            #      tello.send_rc_control(0, 0, 10, 0)
 
 
-
+        tello.send_rc_control(0, 25, 0, 0)
         pad = tello.get_mission_pad_id()
+
+            if pad != -1:                                   # itt ennél az if-nél probléma merült fel
+                x_data = tello.get_mission_pad_distance_x()
+                y_data = tello.get_mission_pad_distance_y()
+                z_data = tello.get_mission_pad_distance_z()
+                list = [pad, x_data, y_data, z_data]
+            else:
+                list = [pad]
+
+
+
+        f = open('result.txt', 'a')
+        f.write('Az aktuálisan látot pad ID-ja  {}\n'.format(list))
+        f.close()
+
+
+        distance +=  25
+
 
 
 
@@ -47,8 +66,6 @@ def fly(pad_dist, alt, speed, wait, res, ip):
     battery = tello.get_battery()
     print("                    BATTERY: ", battery, "%")
 
-    f = open('result.txt', 'a')
-    f.write('A megtett távolság: {}\n'.format(list))
-    f.close()
+
 
     tello.end()
