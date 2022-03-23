@@ -1,6 +1,34 @@
 from djitellopy import Tello
 import time
 
+coordinates = [
+    [3.25000000000000, 1.50000000000000],
+    [3.21592582628907, 1.75881904510252],
+    [3.11602540378444, 2],
+    [2.95710678118655, 2.20710678118655],
+    [2.75000000000000, 2.36602540378444],
+    [2.50881904510252, 2.46592582628907],
+    [2.25000000000000, 2.50000000000000],
+    [1.99118095489748, 2.46592582628907],
+    [1.75000000000000, 2.36602540378444],
+    [1.54289321881345, 2.20710678118655],
+    [1.38397459621556, 2.00000000000000],
+    [1.28407417371093, 1.75881904510252],
+    [1.25000000000000, 1.50000000000000],
+    [1.28407417371093, 1.24118095489748],
+    [1.38397459621556, 1.00000000000000],
+    [1.54289321881345, 0.792893218813453],
+    [1.75000000000000, 0.633974596215561],
+    [1.99118095489748, 0.534074173710932],
+    [2.25000000000000, 0.500000000000000],
+    [2.50881904510252, 0.534074173710932],
+    [2.75000000000000, 0.633974596215561],
+    [2.95710678118655, 0.792893218813452],
+    [3.11602540378444, 1.00000000000000],
+    [3.21592582628907, 1.24118095489748],
+    [3.25000000000000, 1.50000000000000]
+]
+
 
 def fly(pad_dist, alt, speed, wait, res, ip):
     # Camera preparation
@@ -20,13 +48,26 @@ def fly(pad_dist, alt, speed, wait, res, ip):
     tello.enable_mission_pads()
     tello.set_mission_pad_detection_direction(0)
     time.sleep(1)
-
     tello.takeoff()
 
-    pad = tello.get_mission_pad_id()
-    print("pad: ", pad)
-
     # code here
+    pad = tello.get_mission_pad_id()
+    while pad == -1:
+        print("pad: ", pad)
+        tello.send_rc_control(0, 10, 0, 0)
+        pad = tello.get_mission_pad_id()
+    tello.send_rc_control(0, 0, 0, 0)
+
+    pad = current_pad = tello.get_mission_pad_id()
+
+    for pos in coordinates:
+        pad = tello.get_mission_pad_id()
+        if pad == -1:
+            pad = current_pad
+        else:
+            current_pad = pad
+        target = glob2loc_coord([pos[0], pos[1]], pad)
+        tello.go_xyz_speed_mid(target[0], target[1], alt, speed, pad)
 
     # mission end
     tello.disable_mission_pads()
@@ -40,10 +81,28 @@ def fly(pad_dist, alt, speed, wait, res, ip):
 
 
 def glob2loc_coord(global_coordinate, pad_id):
-    pad_coordinates = [[3, 2], [3, 2], [3, 2], [3, 2], [3, 2], [3, 2]]
+    """ Convert global coordinates to local coordinate
+        Arguments:
+            global_coordinate: [x,y] in meter
+            pad_id: 1~8
+    """
+    global_x = global_coordinate[0]
+    global_y = global_coordinate[1]
+    pad_coordinates = [
+        [0.75, 2.25],
+        [2.25, 2.25],
+        [3.75, 2.25],
+        [2.25, 0.75],
+        [3.75, 0.75],
+        [0.75, 0.75]
+    ]
     if pad_id == -1:
-        return -1
+        raise Exception("pad_id must be greater than zero.")
     else:
-        x = global_coordinate[0] - pad_coordinates[pad_id - 1][0]
-        y = global_coordinate[1] - pad_coordinates[pad_id - 1][1]
-    return [x, y]
+        # same pad id, but different location
+        if pad_id == 3 and global_x < 2.25:
+            pad_id = 6
+        # calculate local position
+        local_x = global_x - pad_coordinates[pad_id - 1][0]
+        local_y = global_y - pad_coordinates[pad_id - 1][1]
+    return [local_x, local_y]
