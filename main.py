@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import fly1, fly2, fly3, fly4, fly5, fly6
+import fly1, fly2, fly3, fly4, fly5, fly6, fly7, fly8
 
 # pad distance in cm
+import fly8
+
 pad_dist = 140
 # distance resolution
 res = 6
@@ -17,7 +19,7 @@ ip = ''  # '192.168.1.158'
 
 
 def main():
-    fly6.fly(pad_dist, alt, speed, wait, res, ip)
+    fly8.fly(pad_dist, alt, speed, wait, res, ip)
 
 
 if __name__ == '__main__':

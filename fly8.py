@@ -1,6 +1,5 @@
 from djitellopy import Tello
 import time
-distance = 0
 
 def fly(pad_dist, alt, speed, wait, res, ip):
     # Camera preparation
@@ -28,7 +27,9 @@ def fly(pad_dist, alt, speed, wait, res, ip):
 
     # code here
     distance = 0
-    while distance < 500:
+    start_time = time.time()
+
+    while distance < 400:
 
         while tello.get_height() <= 95:
             tello.send_rc_control(0, 0, 10, 0)
@@ -45,17 +46,14 @@ def fly(pad_dist, alt, speed, wait, res, ip):
         else:
             list = [pad]
 
-
-
         f = open('result.txt', 'a')
         f.write('Az aktuálisan látot pad ID-ja  {}\n'.format(list))
         f.close()
 
-
-        distance +=  25
-
-
-
+        if (time.time() - start_time) >= 1:
+            distance += 25
+            print("result", distance)
+            start_time = time.time()
 
     # mission end
     tello.disable_mission_pads()
