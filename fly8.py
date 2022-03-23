@@ -30,14 +30,14 @@ def fly(pad_dist, alt, speed, wait, res, ip):
     distance = 0
     while distance == 500:
 
-            #   while tello.get_height() <= 95:
-            #      tello.send_rc_control(0, 0, 10, 0)
+        while tello.get_height() <= 95:
+            tello.send_rc_control(0, 0, 10, 0)
 
 
         tello.send_rc_control(0, 25, 0, 0)
         pad = tello.get_mission_pad_id()
 
-        if pad != -1:                                   # itt ennél az if-nél probléma merült fel
+        if pad != -1:
             x_data = tello.get_mission_pad_distance_x()
             y_data = tello.get_mission_pad_distance_y()
             z_data = tello.get_mission_pad_distance_z()
