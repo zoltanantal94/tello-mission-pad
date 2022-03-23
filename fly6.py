@@ -28,6 +28,21 @@ def fly(pad_dist, alt, speed, wait, res, ip):
 
     # code here
 
+    while pad == -1:
+
+        while tello.get_height() <= 95:
+            tello.send_rc_control(0, 0, 10, 0)
+
+        pad = tello.get_mission_pad_id()
+        tello.send_rc_control(-20, 0, 0, 0)
+
+    tello.send_rc_control(0, 0, 0, 0)
+
+    x_data = tello.get_mission_pad_distance_x()
+    y_data = tello.get_mission_pad_distance_y()
+    z_data = tello.get_mission_pad_distance_z()
+    list = [x_data, y_data, z_data]
+    print("Result: ", list)
 
     # mission end
     tello.disable_mission_pads()
@@ -37,4 +52,9 @@ def fly(pad_dist, alt, speed, wait, res, ip):
     tello.turn_motor_off()
     battery = tello.get_battery()
     print("                    BATTERY: ", battery, "%")
+
+    f = open('result.txt', 'a')
+    f.write('A megtett távolság: {}\n'.format(list))
+    f.close()
+
     tello.end()

@@ -1,0 +1,4 @@
+A megtett távolság: 56
+A megtett távolság: 49
+A megtett távolság: 49 (valós megtett távolság 90 cm)
+A megtett távolság: 58

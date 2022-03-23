@@ -1,0 +1,10 @@
+Bal irány
+
+A megtett távolság: 43
+A megtett távolság: 37
+A megtett távolság: 39
+---------------------------------
+Jobb irány
+A megtett távolság: 50
+A megtett távolság: 53
+A megtett távolság: 51

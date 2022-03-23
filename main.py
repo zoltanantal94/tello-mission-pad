@@ -17,7 +17,7 @@ ip = ''  # '192.168.1.158'
 
 
 def main():
-    fly5.fly(pad_dist, alt, speed, wait, res, ip)
+    fly6.fly(pad_dist, alt, speed, wait, res, ip)
 
 
 if __name__ == '__main__':

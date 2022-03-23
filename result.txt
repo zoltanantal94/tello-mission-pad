@@ -1,0 +1,16 @@
+Elõre menet
+
+A megtett távolság: [-19, 0, 67]
+A megtett távolság: [-25, -6, 65]
+A megtett távolság: [-19, 4, 61]
+-------------------------------------
+Jobbra menet
+
+A megtett távolság: [8, 10, 55]
+A megtett távolság: [23, 20, 119]
+A megtett távolság: [8, 21, 114]
+-------------------------------------
+Balra menet
+A megtett távolság: [10, -9, 111]  (70,30)
+A megtett távolság: [11, -12, 114]
+A megtett távolság: [8, -7, 114]
