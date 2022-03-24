@@ -67,7 +67,9 @@ def fly(pad_dist, alt, speed, wait, res, ip):
         else:
             current_pad = pad
         target = glob2loc_coord([pos[0], pos[1]], pad)
-        tello.go_xyz_speed_mid(target[0], target[1], alt, speed, pad)
+        #print(target)
+        tello.go_xyz_speed_mid(int(target[0]*100), int(target[1]*100), alt, speed, pad)
+        #print(pos)
 
     # mission end
     tello.disable_mission_pads()
@@ -89,12 +91,19 @@ def glob2loc_coord(global_coordinate, pad_id):
     global_x = global_coordinate[0]
     global_y = global_coordinate[1]
     pad_coordinates = [
-        [0.75, 2.25],
-        [2.25, 2.25],
-        [3.75, 2.25],
-        [2.25, 0.75],
-        [3.75, 0.75],
-        [0.75, 0.75]
+        [0.30, 1.50],    #1,
+        [0.90, 1.50],    #2
+        [1.50, 1.50],    #3
+        [2.10, 1.50],    #4
+        [0.30, 0.90],    #3
+        [0.90, 0.90],    #4
+        [1.50, 0.90],    #5
+        [2.10, 0.960],    #6
+        [0.30, 0.30],    #5
+        [0.90, 0.30],    #6
+        [1.50, 0.30],    #7
+        [2.10, 0.30],    #8
+
     ]
     if pad_id == -1:
         raise Exception("pad_id must be greater than zero.")
