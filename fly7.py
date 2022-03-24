@@ -1,5 +1,6 @@
 from djitellopy import Tello
 import time
+import math
 
 path = [
     [3.25000000000000, 1.50000000000000],
@@ -28,6 +29,17 @@ path = [
     [3.21592582628907, 1.24118095489748],
     [3.25000000000000, 1.50000000000000]
 ]
+
+land = [1, 2, 3, 4, 3, 4, 5, 6, 5, 6, 7, 8]
+
+land_pos = []
+
+j=0
+k = 0
+k_alt = 0
+local_delta = 0
+local_delta_alt = 5
+
 
 
 def fly(pad_dist, alt, speed, wait, res, ip):
@@ -91,27 +103,48 @@ def glob2loc_coord(global_coordinate, pad_id):
     global_x = global_coordinate[0]
     global_y = global_coordinate[1]
     pad_coordinates = [
-        [0.30, 1.50],    #1,
-        [0.90, 1.50],    #2
-        [1.50, 1.50],    #3
-        [2.10, 1.50],    #4
-        [0.30, 0.90],    #3
-        [0.90, 0.90],    #4
-        [1.50, 0.90],    #5
-        [2.10, 0.90],    #6
-        [0.30, 0.30],    #5
-        [0.90, 0.30],    #6
-        [1.50, 0.30],    #7
-        [2.10, 0.30],    #8
+        [0.30, 1.50],    #1.1,  1
+        [0.90, 1.50],    #1.2   2
+        [1.50, 1.50],    #1.3   3
+        [2.10, 1.50],    #1.4   4
+        [0.30, 0.90],    #2.1   3
+        [0.90, 0.90],    #2.2   4
+        [1.50, 0.90],    #2.3   5
+        [2.10, 0.90],    #2.4   6
+        [0.30, 0.30],    #3.1   5
+        [0.90, 0.30],    #3.2   6
+        [1.50, 0.30],    #3.3   7
+        [2.10, 0.30]     #3.4   8
 
     ]
     if pad_id == -1:
         raise Exception("pad_id must be greater than zero.")
     else:
         # same pad id, but different location
-        if pad_id == 3 and global_x < 2.25:
-            pad_id = 6
-        # calculate local position
-        local_x = global_x - pad_coordinates[pad_id - 1][0]
-        local_y = global_y - pad_coordinates[pad_id - 1][1]
+
+
+        land_pos  = land
+        j = land_pos.coutn(pad_id)
+
+
+        for j in range(j)
+
+            k = land_pos.index(pad_id)
+
+            local_x = global_x - pad_coordinates[k][0]
+            local_y = global_y - pad_coordinates[k][1]
+
+            local_delta = math.sqrt((local_x ** 2)+(local_x ** 2))
+
+
+            if local_delta < local_delta_alt
+                local_delta_alt = local_delta
+                k_alt = k
+
+            land_pos[k] +=1
+
+
+
+
+
     return [local_x, local_y]
