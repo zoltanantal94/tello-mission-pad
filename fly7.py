@@ -34,7 +34,7 @@ land = [1, 2, 3, 4, 3, 4, 5, 6, 5, 6, 7, 8]
 
 land_pos = []
 
-j=0
+j = 0
 k = 0
 k_alt = 0
 local_delta = 0
@@ -79,9 +79,9 @@ def fly(pad_dist, alt, speed, wait, res, ip):
         else:
             current_pad = pad
         target = glob2loc_coord([pos[0], pos[1]], pad)
-        #print(target)
-        tello.go_xyz_speed_mid(int(target[0]*100), int(target[1]*100), alt, speed, pad)
-        #print(pos)
+        # print(target)
+        tello.go_xyz_speed_mid(int(target[0] * 100), int(target[1] * 100), alt, speed, pad)
+        # print(pos)
 
     # mission end
     tello.disable_mission_pads()
@@ -95,6 +95,7 @@ def fly(pad_dist, alt, speed, wait, res, ip):
 
 
 def glob2loc_coord(global_coordinate, pad_id):
+    global local_delta_alt, k_alt
     """ Convert global coordinates to local coordinate
         Arguments:
             global_coordinate: [x,y] in meter
@@ -103,18 +104,18 @@ def glob2loc_coord(global_coordinate, pad_id):
     global_x = global_coordinate[0]
     global_y = global_coordinate[1]
     pad_coordinates = [
-        [0.30, 1.50],    #1.1,  1
-        [0.90, 1.50],    #1.2   2
-        [1.50, 1.50],    #1.3   3
-        [2.10, 1.50],    #1.4   4
-        [0.30, 0.90],    #2.1   3
-        [0.90, 0.90],    #2.2   4
-        [1.50, 0.90],    #2.3   5
-        [2.10, 0.90],    #2.4   6
-        [0.30, 0.30],    #3.1   5
-        [0.90, 0.30],    #3.2   6
-        [1.50, 0.30],    #3.3   7
-        [2.10, 0.30]     #3.4   8
+        [0.30, 1.50],  # 1.1,  1
+        [0.90, 1.50],  # 1.2   2
+        [1.50, 1.50],  # 1.3   3
+        [2.10, 1.50],  # 1.4   4
+        [0.30, 0.90],  # 2.1   3
+        [0.90, 0.90],  # 2.2   4
+        [1.50, 0.90],  # 2.3   5
+        [2.10, 0.90],  # 2.4   6
+        [0.30, 0.30],  # 3.1   5
+        [0.90, 0.30],  # 3.2   6
+        [1.50, 0.30],  # 3.3   7
+        [2.10, 0.30]  # 3.4   8
 
     ]
     if pad_id == -1:
@@ -122,10 +123,8 @@ def glob2loc_coord(global_coordinate, pad_id):
     else:
         # same pad id, but different location
 
-
-        land_pos  = land
-        j = land_pos.coutn(pad_id)
-
+        land_pos = land
+        j = land_pos.count(pad_id)
 
         for l in range(j):
 
@@ -134,14 +133,13 @@ def glob2loc_coord(global_coordinate, pad_id):
             local_x1 = global_x - pad_coordinates[k][0]
             local_y1 = global_y - pad_coordinates[k][1]
 
-            local_delta = math.sqrt((local_x1 ** 2)+(local_y1 ** 2))
-
+            local_delta = math.sqrt((local_x1 ** 2) + (local_y1 ** 2))
 
             if local_delta < local_delta_alt:
                 local_delta_alt = local_delta
                 k_alt = k
 
-            land_pos[k] +=1
+            land_pos[k] += 1
 
         local_x = global_x - pad_coordinates[k_alt][0]
         local_y = global_y - pad_coordinates[k_alt][1]
