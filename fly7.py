@@ -1,7 +1,7 @@
 from djitellopy import Tello
 import time
 
-coordinates = [
+path = [
     [3.25000000000000, 1.50000000000000],
     [3.21592582628907, 1.75881904510252],
     [3.11602540378444, 2],
@@ -60,7 +60,7 @@ def fly(pad_dist, alt, speed, wait, res, ip):
 
     pad = current_pad = tello.get_mission_pad_id()
 
-    for pos in coordinates:
+    for pos in path:
         pad = tello.get_mission_pad_id()
         if pad == -1:
             pad = current_pad
