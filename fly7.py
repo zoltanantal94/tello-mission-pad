@@ -131,10 +131,10 @@ def glob2loc_coord(global_coordinate, pad_id):
 
             k = land_pos.index(pad_id)
 
-            local_x = global_x - pad_coordinates[k][0]
-            local_y = global_y - pad_coordinates[k][1]
+            local_x1 = global_x - pad_coordinates[k][0]
+            local_y1 = global_y - pad_coordinates[k][1]
 
-            local_delta = math.sqrt((local_x ** 2)+(local_x ** 2))
+            local_delta = math.sqrt((local_x1 ** 2)+(local_y1 ** 2))
 
 
             if local_delta < local_delta_alt:
@@ -143,8 +143,8 @@ def glob2loc_coord(global_coordinate, pad_id):
 
             land_pos[k] +=1
 
-        land_pos = land
-
+    local_x = global_x - pad_coordinates[k_alt][0]
+    local_y = global_y - pad_coordinates[k_alt][1]
 
 
     return [local_x, local_y]
