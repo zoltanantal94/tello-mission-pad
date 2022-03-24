@@ -143,7 +143,7 @@ def glob2loc_coord(global_coordinate, pad_id):
 
             land_pos[k] +=1
 
-
+        land_pos = land
 
 
 
