@@ -39,7 +39,7 @@ k = 0
 k_alt = 0
 local_delta = 0
 local_delta_alt = 5
-
+l = 0
 
 
 def fly(pad_dist, alt, speed, wait, res, ip):
@@ -127,7 +127,7 @@ def glob2loc_coord(global_coordinate, pad_id):
         j = land_pos.coutn(pad_id)
 
 
-        for j in range(j)
+        for l in range(j):
 
             k = land_pos.index(pad_id)
 
@@ -137,7 +137,7 @@ def glob2loc_coord(global_coordinate, pad_id):
             local_delta = math.sqrt((local_x ** 2)+(local_x ** 2))
 
 
-            if local_delta < local_delta_alt
+            if local_delta < local_delta_alt:
                 local_delta_alt = local_delta
                 k_alt = k
 
