@@ -1,5 +1,3 @@
-import math
-
 from djitellopy import Tello
 import time
 
@@ -30,33 +28,33 @@ def fly(pad_dist, alt, speed, wait, res, ip):
 
     # noinspection PyUnreachableCode
     if not True:
-        id = 1
+        pid = 1
         wait = 0.001
-        tello.go_xyz_speed_mid(x=50, y=0, z=alt, speed=speed, mid=id)
+        tello.go_xyz_speed_mid(x=50, y=0, z=alt, speed=speed, mid=pid)
         time.sleep(1)
-        flycircle(tello, alt, speed, wait, id)
+        flycircle(tello, alt, speed, wait, pid)
         tello.go_xyz_speed_mid(x=150, y=0, z=alt, speed=speed, mid=1)
         time.sleep(6)
         tello.go_xyz_speed_mid(x=50, y=0, z=alt, speed=speed, mid=2)
         time.sleep(1)
-        id = 2
-        flycircle(tello, alt, speed, wait, id)
+        pid = 2
+        flycircle(tello, alt, speed, wait, pid)
         tello.go_xyz_speed_mid(x=-150, y=0, z=alt, speed=speed, mid=2)
         time.sleep(2)
         tello.go_xyz_speed_mid(x=0, y=0, z=alt, speed=speed, mid=1)
     else:
         for i in range(31):
-           tello.go_xyz_speed_mid(x = i*5, y = 0, z = alt, speed = speed, mid = 1)
-           pad = tello.get_mission_pad_id()
-           print("pad: ", pad)
-           if pad == 2:
-               break
-           #time.sleep(0.2)
+            tello.go_xyz_speed_mid(x=i * 5, y=0, z=alt, speed=speed, mid=1)
+            pad = tello.get_mission_pad_id()
+            print("pad: ", pad)
+            if pad == 2:
+                break
+            # time.sleep(0.2)
         for i in range(31):
-           tello.go_xyz_speed_mid(x = i*5, y = 0, z = alt, speed = speed, mid = 2)
-           pad = tello.get_mission_pad_id()
-           print("pad: ", pad)
-           #time.sleep(0.2)
+            tello.go_xyz_speed_mid(x=i * 5, y=0, z=alt, speed=speed, mid=2)
+            pad = tello.get_mission_pad_id()
+            print("pad: ", pad)
+            # time.sleep(0.2)
 
     tello.disable_mission_pads()
     tello.land()
@@ -68,7 +66,7 @@ def fly(pad_dist, alt, speed, wait, res, ip):
     tello.end()
 
 
-def flycircle(tello, alt, speed, wait, idm):
+def fly_circle(tello, alt, speed, _, idm):
     tello.go_xyz_speed_mid(x=50, y=0, z=alt, speed=speed, mid=idm)
     tello.go_xyz_speed_mid(x=48, y=13, z=alt, speed=speed, mid=idm)
     tello.go_xyz_speed_mid(x=43, y=25, z=alt, speed=speed, mid=idm)

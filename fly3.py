@@ -1,7 +1,6 @@
-import math
-
 from djitellopy import Tello
 import time
+
 
 def fly(pad_dist, alt, speed, wait, res, ip):
     # Camera preparation

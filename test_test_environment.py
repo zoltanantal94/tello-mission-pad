@@ -13,6 +13,7 @@ class TestInit(TestTestEnvironment):
         self.assertSequenceEqual(self.env.local, ([0]))
 
 
+# noinspection PyTypeChecker
 class TestNavigation(TestTestEnvironment):
     def test_check_1(self):
         self.env.transform_coordinate([0.30, 1.50], 1)

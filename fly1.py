@@ -1,7 +1,7 @@
 import math
-import main
 from djitellopy import Tello
 import time
+
 
 def fly(pad_dist, alt, speed, wait, res, ip):
     # Camera preparation
@@ -39,8 +39,8 @@ def fly(pad_dist, alt, speed, wait, res, ip):
                 while pad != pad_id:
                     pad = tello.get_mission_pad_id()
                 tello.go_xyz_speed_mid(0, int(set_y_pos), alt, speed, pad_id)
-            except:
-                print("ooopsie")
+            except tello.TelloException:
+                print("No valid IMU")
                 continue
             time.sleep(wait)
             pad = tello.get_mission_pad_id()
