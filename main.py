@@ -11,7 +11,7 @@ res = 6
 # wait after command second
 wait = 0.01
 # fly speed in cm/s [10...100]
-speed = 100
+speed = 20
 # fly altitude in cm [30...120]
 alt = 100
 # specify ip if Tello connected to WiFi router, else comment out

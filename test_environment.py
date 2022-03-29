@@ -6,4 +6,4 @@ class TestEnvironment:
         self.local = [0]
 
     def transform_coordinate(self, global_coordinate, pad_id):
-        self.local = fly7.glob2loc_coord_alt(global_coordinate, pad_id)
+        self.local = fly7.glob2loc_coord(global_coordinate, pad_id)
