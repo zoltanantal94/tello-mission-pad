@@ -30,17 +30,6 @@ path = [
     [3.25000000000000, 1.50000000000000]
 ]
 
-land = [1, 2, 3, 4, 3, 4, 5, 6, 5, 6, 7, 8]
-
-land_pos = []
-
-j = 0
-k = 0
-k_alt = 0
-local_delta = 0
-local_delta_alt = 5
-l = 0
-
 
 def fly(pad_dist, alt, speed, wait, res, ip):
     # Camera preparation
@@ -95,12 +84,17 @@ def fly(pad_dist, alt, speed, wait, res, ip):
 
 
 def glob2loc_coord(global_coordinate, pad_id):
-    global local_delta_alt, k_alt
     """ Convert global coordinates to local coordinate
         Arguments:
             global_coordinate: [x,y] in meter
             pad_id: 1~8
     """
+
+    land = [1, 2, 3, 4, 3, 4, 5, 6, 5, 6, 7, 8]
+    local_delta_min = 100
+    k_min = 0
+    j = 0
+
     global_x = global_coordinate[0]
     global_y = global_coordinate[1]
     pad_coordinates = [
@@ -115,7 +109,7 @@ def glob2loc_coord(global_coordinate, pad_id):
         [0.30, 0.30],  # 3.1   5
         [0.90, 0.30],  # 3.2   6
         [1.50, 0.30],  # 3.3   7
-        [2.10, 0.30]  # 3.4   8
+        [2.10, 0.30]   # 3.4   8
 
     ]
     if pad_id == -1:
@@ -124,9 +118,9 @@ def glob2loc_coord(global_coordinate, pad_id):
         # same pad id, but different location
 
         land_pos = land
-        j = land_pos.count(pad_id)
+        possible_pads = land_pos.count(pad_id)
 
-        for l in range(j):
+        for j in range(possible_pads):
 
             k = land_pos.index(pad_id)
 
@@ -135,14 +129,14 @@ def glob2loc_coord(global_coordinate, pad_id):
 
             local_delta = math.sqrt((local_x1 ** 2) + (local_y1 ** 2))
 
-            if local_delta < local_delta_alt:
-                local_delta_alt = local_delta
-                k_alt = k
+            if local_delta < local_delta_min:
+                local_delta_min = local_delta
+                k_min = k
 
             land_pos[k] += 1
 
-        local_x = global_x - pad_coordinates[k_alt][0]
-        local_y = global_y - pad_coordinates[k_alt][1]
+        local_x = global_x - pad_coordinates[k_min][0]
+        local_y = global_y - pad_coordinates[k_min][1]
 
     return [local_x, local_y]
 
