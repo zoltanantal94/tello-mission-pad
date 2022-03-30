@@ -3,34 +3,29 @@ import time
 import math
 
 path = [
-    [2.25000000000000, 1.50000000000000],
-    [2.22444436971680, 1.694114283826891],
-    [2.149519052838329, 1.875000000000000],
-    [2.030330085889911, 2.030330085889911],
-    [1.875000000000000, 2.149519052838329],
-    [1.694114283826891, 2.224444369716801],
-    [1.50000000000000, 2.250000000000000],
-    [1.305885716173109, 2.224444369716801],
-    [1.125000000000000, 2.149519052838329],
-    [0.969669914110089, 2.030330085889911],
-    [0.850480947161671, 1.875000000000000],
-    [0.775555630283199, 1.694114283826891],
-    [0.750000000000000, 1.500000000000000],
-    [0.775555630283199, 1.305885716173109],
-    [0.850480947161671, 1.125000000000000],
-    [0.969669914110089, 0.969669914110089],
-    [1.125000000000000, 0.850480947161671],
-    [1.305885716173109, 0.775555630283199],
-    [1.500000000000000, 0.750000000000000],
-    [1.694114283826890, 0.775555630283199],
-    [1.875000000000000, 0.850480947161671],
-    [2.030330085889911, 0.969669914110089],
-    [2.149519052838329, 1.125000000000000],
-    [2.224444369716801, 1.305885716173109],
-    [2.250000000000000, 1.500000000000000]
+    [1.7000, 0.4000],
+    [1.7000, 0.6400],
+    [1.7000, 0.8800],
+    [1.7000, 1.1200],
+    [1.7000, 1.3600],
+    [1.7000, 1.6000],
+    [1.5100, 1.6000],
+    [1.3200, 1.6000],
+    [1.1300, 1.6000],
+    [0.9400, 1.6000],
+    [0.7500, 1.6000],
+    [0.7500, 1.3600],
+    [0.7500, 1.1200],
+    [0.7500, 0.8800],
+    [0.7500, 0.6400],
+    [0.7500, 0.4000],
+    [0.9400, 0.4000],
+    [1.1300, 0.4000],
+    [1.3200, 0.4000],
+    [1.5100, 0.4000],
+    [1.7000, 0.4000]
+
 ]
-
-
 def fly(pad_dist, alt, speed, wait, res, ip):
     # Camera preparation
     if 'ip' in locals() and ip != '':
@@ -53,8 +48,10 @@ def fly(pad_dist, alt, speed, wait, res, ip):
 
     # code here
     pad = tello.get_mission_pad_id()
+
     while pad == -1:
-        print("pad: ", pad)
+        while tello.get_height() <= 100:
+            tello.send_rc_control(0, 0, 10, 0)
         tello.send_rc_control(0, 10, 0, 0)
         pad = tello.get_mission_pad_id()
     tello.send_rc_control(0, 0, 0, 0)
@@ -69,6 +66,7 @@ def fly(pad_dist, alt, speed, wait, res, ip):
             current_pad = pad
         target = glob2loc_coord([pos[0], pos[1]], pad)
         # print(target)
+        print("pad: ", pad, ", pad: ", tello.get_mission_pad_id())
         tello.go_xyz_speed_mid(int(target[0] * 100), int(target[1] * 100), alt, speed, pad)
         # print(pos)
 
@@ -139,46 +137,3 @@ def glob2loc_coord(global_coordinate, pad_id):
     return [local_x, local_y]
 
 
-def glob2loc_coord_alt(global_coordinate, pad_id):
-    """ Convert global coordinates to local coordinate
-        Arguments:
-            global_coordinate: [x,y] in meter
-            pad_id: 1~8
-    """
-    global_x = global_coordinate[0]
-    global_y = global_coordinate[1]
-    pad_coordinates = [
-        [[0.30, 1.50], 1],  # 1.1,  1
-        [[0.90, 1.50], 2],  # 1.2   2
-        [[1.50, 1.50], 3],  # 1.3   3
-        [[2.10, 1.50], 4],  # 1.4   4
-        [[0.30, 0.90], 3],  # 2.1   3
-        [[0.90, 0.90], 4],  # 2.2   4
-        [[1.50, 0.90], 5],  # 2.3   5
-        [[2.10, 0.90], 6],  # 2.4   6
-        [[0.30, 0.30], 5],  # 3.1   5
-        [[0.90, 0.30], 6],  # 3.2   6
-        [[1.50, 0.30], 7],  # 3.3   7
-        [[2.10, 0.30], 8]   # 3.4   8
-    ]
-    if pad_id == -1:
-        raise Exception("pad_id must be greater than zero.")
-    else:
-        possible_pads = []
-        # select pads by id
-        for p in pad_coordinates:
-            if p[1] == pad_id:
-                possible_pads.append(p[0])
-        # calculate distances
-        for p in possible_pads:
-            p.append(
-                math.sqrt(
-                    (global_x - p[0]) ** 2 + (global_y - p[1]) ** 2
-                )
-            )
-        # sort array by 3rd column, and return first row
-        selected_pad = sorted(possible_pads, key=lambda x: x[2])[0]
-        local_x = global_x - selected_pad[0]
-        local_y = global_y - selected_pad[1]
-
-    return [local_x, local_y]
