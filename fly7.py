@@ -94,7 +94,7 @@ def glob2loc_coord(global_coordinate, pad_id):
     global_x = global_coordinate[0]
     global_y = global_coordinate[1]
     pad_coordinates = [
-        [0.30, 1.50],  # 1.1,  1
+        [0.30, 1.50],  # 1.1, 1
         [0.90, 1.50],  # 1.2   2
         [1.50, 1.50],  # 1.3   3
         [2.10, 1.50],  # 1.4   4
