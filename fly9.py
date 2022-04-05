@@ -3,18 +3,18 @@ import time
 import math
 
 path = [
-    [1.7000, 0.4000, 0.9000],
-    [1.7000, 0.6400, 0.9000],
-    [1.7000, 0.8800, 0.9000],
-    [1.7000, 1.1200, 0.9000],
-    [1.7000, 1.3600, 0.9000],
-    [1.7000, 1.6000, 0.9000],
-    [1.5100, 1.6000, 1.0000],
-    [1.3200, 1.6000, 1.0000],
-    [1.1300, 1.6000, 1.0000],
-    [0.9400, 1.6000, 1.0000],
-    [0.7500, 1.6000, 1.0000],
-    [0.7500, 1.3600, 1.0000],
+    [1.7000, 0.4000, 1.0000],
+    [1.7000, 0.6400, 1.0000],
+    [1.7000, 0.8800, 1.0000],
+    [1.7000, 1.1200, 1.0000],
+    [1.7000, 1.3600, 1.0000],
+    [1.7000, 1.6000, 1.0000],
+    [1.5100, 1.6000, 1.0500],
+    [1.3200, 1.6000, 1.0500],
+    [1.1300, 1.6000, 1.0500],
+    [0.9400, 1.6000, 1.0500],
+    [0.7500, 1.6000, 1.0500],
+    [0.7500, 1.3600, 1.0500],
     [0.7500, 1.1200, 1.1000],
     [0.7500, 0.8800, 1.1000],
     [0.7500, 0.6400, 1.1000],
@@ -25,7 +25,6 @@ path = [
     [1.5100, 0.4000, 1.1000],
     [1.7000, 0.4000, 1.1000]
 ]
-
 def fly(pad_dist, alt, speed, wait, res, ip):
     # Camera preparation
     if 'ip' in locals() and ip != '':
@@ -57,8 +56,7 @@ def fly(pad_dist, alt, speed, wait, res, ip):
     tello.send_rc_control(0, 0, 0, 0)
 
     pad = current_pad = tello.get_mission_pad_id()
-    global current_z
-    current_z = tello.get_height()
+
     for pos in path:
         pad = tello.get_mission_pad_id()
         if pad == -1:
@@ -91,28 +89,31 @@ def glob2loc_coord(global_coordinate, pad_id):
     land = [1, 2, 3, 4, 3, 4, 5, 6, 5, 6, 7, 8]
     local_delta_min = 100
     k_min = 0
+    z_index = 0
 
     global_x = global_coordinate[0]
     global_y = global_coordinate[1]
     pad_coordinates = [
-        [0.30, 1.50],  # 1.1,  1
-        [0.90, 1.50],  # 1.2   2
-        [1.50, 1.50],  # 1.3   3
-        [2.10, 1.50],  # 1.4   4
-        [0.30, 0.90],  # 2.1   3
-        [0.90, 0.90],  # 2.2   4
-        [1.50, 0.90],  # 2.3   5
-        [2.10, 0.90],  # 2.4   6
-        [0.30, 0.30],  # 3.1   5
-        [0.90, 0.30],  # 3.2   6
-        [1.50, 0.30],  # 3.3   7
-        [2.10, 0.30]   # 3.4   8
+        [0.30, 1.50, 0],  # 1.1,  1
+        [0.90, 1.50, 0],  # 1.2   2
+        [1.50, 1.50, 0],  # 1.3   3
+        [2.10, 1.50, 0],  # 1.4   4
+        [0.30, 0.90, 0],  # 2.1   3
+        [0.90, 0.90, 0],  # 2.2   4
+        [1.50, 0.90, 0],  # 2.3   5
+        [2.10, 0.90, 0],  # 2.4   6
+        [0.30, 0.30, 0],  # 3.1   5
+        [0.90, 0.30, 0],  # 3.2   6
+        [1.50, 0.30, 0],  # 3.3   7
+        [2.10, 0.30, 0]   # 3.4   8
 
     ]
     if pad_id == -1:
         raise Exception("pad_id must be greater than zero.")
     else:
         # same pad id, but different location
+        z_index += 1
+        print(z_index)
         land_pos = land
         possible_pads = land_pos.count(pad_id)
 
@@ -122,15 +123,16 @@ def glob2loc_coord(global_coordinate, pad_id):
 
             local_x1 = global_x - pad_coordinates[k][0]
             local_y1 = global_y - pad_coordinates[k][1]
+
             local_delta = math.sqrt((local_x1 ** 2) + (local_y1 ** 2))
 
             if local_delta < local_delta_min:
                 local_delta_min = local_delta
                 k_min = k
-
             land_pos[k] += 1
 
         local_x = global_x - pad_coordinates[k_min][0]
         local_y = global_y - pad_coordinates[k_min][1]
-        local_z = path[2] - current_z
+        local_z = pad_coordinates[k_min][2]+path[z_index][2]
+
     return [local_x, local_y, local_z]
