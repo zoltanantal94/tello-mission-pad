@@ -63,11 +63,9 @@ def fly(pad_dist, alt, speed, wait, res, ip):
             pad = current_pad
         else:
             current_pad = pad
-        target = glob2loc_coord([pos[0], pos[1]], pos[2], pad)
-        #altitude = path[pos][2]
-        print(pos)
+        target = glob2loc_coord([pos[0], pos[1]], pad)
         print("pad: ", pad, ", pad: ", tello.get_mission_pad_id())
-        tello.go_xyz_speed_mid(int(target[0] * 100), int(target[1] * 100), int(target[2]*100), speed, pad)
+        tello.go_xyz_speed_mid(int(target[0] * 100), int(target[1] * 100), int(pos[2]*100), speed, pad)
         # print(pos)
 
     # mission end
